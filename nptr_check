@@ -1,0 +1,29 @@
+#include <sstream>
+
+//Identifying NULL pointers in Visual Studio
+//0xFDFDFDFD	No man's land (normally outside of a process)
+//0xDDDDDDDD	Freed memory
+//0xCDCDCDCD	Uninitialized(global)
+//0xCCCCCCCC	Uninitialized locals(on the stack)
+//nptr_check returns true if a null pointer and false if not
+bool nptr_check(node *ptr)
+{
+	//get physical memory address
+	ostringstream address;
+	string str_address;
+	address.clear();
+	address << (void const*)ptr;
+	str_address = address.str();
+	str_address = str_address.substr(str_address.length() - 8, 8);
+	if (ptr == nullptr or ptr == NULL or ptr == 0 or str_address == "DDDDDDDD" or str_address == "FDFDFDFD" or str_address == "CDCDCDCD" or str_address == "CCCCCCCC")
+	{
+		//This is a null pointer
+		return true;
+	}
+	else
+	{
+		//This is not a null pointer
+		return false;
+	}
+
+}
